@@ -4,7 +4,7 @@
 
 
 
-const {game, newGame, showScore, addTurn, lightsOn} = require('../game');
+const {game, newGame, showScore, addTurn, lightsOn, showTurns} = require('../game');
 
 
 beforeAll(() => {  // typical boilerplate document loading code block
@@ -54,6 +54,15 @@ describe('newGame works correctly', () => {
     test('should display zero in the element with an id of score', ()=> {
         expect(document.getElementById('score').innerText).toEqual(0);
     });
+    test('turnNumber key exists', () => {
+        expect('turnNumber' in game).toBe(true);
+    });
+    test('expect data-listener to be true', () => {
+        const elements = document.getElementsByClassName('circle');
+        for(let element of elements){
+            expect(element.getAttribute('data-listener')).toEqual('true');
+        }        
+    });
 });
 
 describe('gameplay works correctly', () => {
@@ -77,4 +86,9 @@ describe('gameplay works correctly', () => {
         lightsOn(game.currentGame[0]);
         expect(button.classList).toContain('light');  // this checks the button classlist to check if it contains the class 'light'
     });
+    test('show turns should update game turn number', () => {
+        game.turnNumber = 42;
+        showTurns();
+        expect(game.turnNumber).toBe(0);
+    });    
 });
