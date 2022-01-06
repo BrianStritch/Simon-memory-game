@@ -4,7 +4,7 @@
 
 
 
-const {game, newGame, showScore} = require('../game');
+const {game, newGame, showScore, addTurn} = require('../game');
 
 
 beforeAll(() => {  // typical boilerplate document loading code block
@@ -36,20 +36,21 @@ describe('game object contains the correct keys', () => {
 describe('newGame works correctly', () => {
     beforeAll(() => {
         game.score = 42;
-        game.playerMoves = ['1','2'];
-        game.currentGame = ['1','2'];
+        game.playerMoves = ['button1','button2'];
+        game.currentGame = ['button1','button2'];
         document.getElementById('score').innerText = '42';
         newGame();
     });
     test('should set the game score to zero', ()=> {
         expect(game.score).toEqual(0);
     });
+    test('should be one move in the computers game array', ()=> {
+        expect(game.currentGame.length).toBe(1);
+    });
     test('should set the playerMoves to an empty array', ()=> {
         expect(game.playerMoves.length).toEqual(0);
     });
-    test('should set the currentGame to an empty array', ()=> {
-        expect(game.currentGame.length).toEqual(0);
-    });
+    
     test('should display zero in the element with an id of score', ()=> {
         expect(document.getElementById('score').innerText).toEqual(0);
     });
