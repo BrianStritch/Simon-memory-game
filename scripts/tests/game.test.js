@@ -4,7 +4,7 @@
 
 
 
-const {game, newGame, showScore, addTurn} = require('../game');
+const {game, newGame, showScore, addTurn, lightsOn} = require('../game');
 
 
 beforeAll(() => {  // typical boilerplate document loading code block
@@ -34,7 +34,7 @@ describe('game object contains the correct keys', () => {
 });
 
 describe('newGame works correctly', () => {
-    beforeAll(() => {
+    beforeAll(() => {  // this runs before all tests have been run
         game.score = 42;
         game.playerMoves = ['button1','button2'];
         game.currentGame = ['button1','button2'];
@@ -53,5 +53,28 @@ describe('newGame works correctly', () => {
     
     test('should display zero in the element with an id of score', ()=> {
         expect(document.getElementById('score').innerText).toEqual(0);
+    });
+});
+
+describe('gameplay works correctly', () => {
+    beforeEach(() => {   // this runs before each test is performed
+        game.score = 0;
+        game.currentGame = [];
+        game.playerMoves = [];
+        addTurn();
+    });
+    afterEach(() =>{  // this runs after each test is performed
+        game.score = 0;
+        game.currentGame = [];
+        game.playerMoves = [];
+    });
+    test('addTurn adds a new turn to the game', () => {
+        addTurn();
+        expect(game.currentGame.length).toBe(2);
+    });
+    test('should add the correct class to light up the buttons', () => {
+        let button = document.getElementById(game.currentGame[0]);
+        lightsOn(game.currentGame[0]);
+        expect(button.classList).toContain('light');  // this checks the button classlist to check if it contains the class 'light'
     });
 });
